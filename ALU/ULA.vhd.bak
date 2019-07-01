@@ -1,0 +1,50 @@
+--
+-- Unidade Lógica Aritmética - ULA
+-- 
+--
+--	|		x		|		y		|		z		|			S			|
+--	|		0		|		0		|		0		|	A		+		B	|
+--	|		0		|		0		|		1		|	A		-		B	|
+--	|		0		|		1		|		0		|	A		and	B	|
+--	|		0		|		1		|		1		|	A		or		B	|
+--	|		1		|		0		|		0		|	A		xor	B	|
+--	|		1		|		0		|		1		|			not 	A	|
+--	|		1		|		1		|		0		|			not	B	|
+--	|		1		|		1		|		1		|			Z			|
+--	
+--	OBS: as três ultimas operações estão sujeitos a alterações sendo:
+--			"101" >>>> 'not' para 'X' e 'Y'
+--			"110" >>>> 'deslocamento logico para a esquerda (SLL)' 
+--			"111" >>>> 'deslocamento logico para a direita  (SRL)'
+
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.std_logic_unsigned.all;
+
+entity ULA is 
+	port
+	(
+		X, Y 		 :	in  std_logic_vector(3 downto 0);
+		S 			 : out std_logic_vector(3 downto 0);
+		selection : in	 std_logic_vector(2 downto 0)
+	);
+end ULA;	
+	
+architecture hardware of ULA is
+begin
+	process(X, Y, selection)
+	begin
+		case selection is
+		
+		when "000" => S <= A + B;
+		when "001" => S <= A - B;
+		when "010" => S <= A and B;
+		when "011" => S <= A or B;
+		when "100" => S <= A xor B;
+		when "101" => S <= not A;
+		when "110" => S <= not B;
+		when others => S <= "zzzz";
+		
+		end case;
+	end process;
+end hardware;
